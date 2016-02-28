@@ -469,11 +469,19 @@ Q.Z = Q.Z || {};
 
     (function (root, $) {
         var prompt = null;
+        var datalist = (function(){
+            var datalist = $('<datalist id="QzCommands"></datalist>');
+            $(document.body).append(datalist);
+            return datalist.get(0);
+        }());
+
         var commands = [];
         root.commands = {
             get: function(){ return commands; },
             add: function(command){
                 for(var key in command){
+                    $(datalist).append("<option value='" + key + "'></option>");
+
                     commands.push({
                         command : key,
                         handler : command[key]
@@ -483,25 +491,30 @@ Q.Z = Q.Z || {};
         };
 
         var createPrompt = function(){
-            var prompt = $('<div class="qz-command"><input type="datalist" /></div>');
+            var prompt = $('<div class="qz-command"><input list="QzCommands" /></div>');
             $(document.body).append(prompt);
-            prompt.find("input[type='datalist']").focus();
-            prompt.find("input[type='datalist']").on('keyup', function(e){
+            prompt.find("input[list='QzCommands']").after(datalist);
+
+            prompt.find("input[list='QzCommands']").focus();
+            prompt.find("input[list='QzCommands']").on('keyup', function(e){
                 var enter = 13;
                 if(e.keyCode == enter){
                     var value = $(this).val();
-                    for (var i = 0; i < commands.length; i++) {
-                        var command = commands[i];
-                        if(command.command == value){
-                            command.handler();
-                        }
+                    var selectedCommands = Qz.Linq.where(commands, function(k){
+                        return k.command == value;
+                    });
+
+                    for (var i = 0; i < selectedCommands.length; i++) {
+                        selectedCommands[i].handler();
                     }
                     prompt.hide();
                 }
             });
             $(document).on('keyup', function(e){
                 var escape = 27;
-                if(e.keyCode == escape){
+                var tab = 9;
+                if(e.keyCode == escape ||
+                    e.keyCode == tab){
                     prompt.hide();
                 }
             });
@@ -512,9 +525,9 @@ Q.Z = Q.Z || {};
                 prompt = createPrompt();
             }
             else{
-                $(prompt).find("input[type='datalist']").val('');
+                $(prompt).find("input[list='QzCommands']").val('');
                 $(prompt).show();
-                $(prompt).find("input[type='datalist']").focus();
+                $(prompt).find("input[list='QzCommands']").focus();
             }
         };
     }(root, $));
