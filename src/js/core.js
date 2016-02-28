@@ -101,19 +101,6 @@ Q.Z = Q.Z || {};
 // section Qz.Context
 (function (root, $) {
     "use strict";
-    root.overrideBrowserShortcut = Qz.Object.property(true);
-    root.browserShortcutList = Qz.Object.property({
-        ctrlF: false,
-        ctrlI: true,
-        ctrlN: true,
-        ctrlO: true,
-        ctrlR: false,
-        ctrlS: true,
-        f1: true,
-        f2: true,
-        f3: true,
-        f4: true
-    });
 	root.formatInfo = {
 		dateFormat: Qz.Object.property("yyyy-MMM-dd"),
 		decimalDigit: Qz.Object.property("2"),
@@ -361,87 +348,6 @@ Q.Z = Q.Z || {};
 // section Qz.Web
 (function (root, $) {
     "use strict";
-    // section Qz.Web.surpressBrowserShortcut
-    (function (root, $) {
-        var surpressBrowserShortcut = function (config) {
-            var option = $.extend(Qz.Context.browserShortcutList(), config);
-
-    		var onKeyDown = function(e){
-    			if(Qz.Context.overrideBrowserShortcut())
-    			{
-    				if(option.ctrlF && e.ctrlKey && e.keyCode == 70){
-    					e.preventDefault();
-    				}
-    				else if (option.ctrlI && e.ctrlKey && e.keyCode == 73) {
-    				    e.preventDefault();
-    				}
-    				else if (option.ctrlN && e.ctrlKey && e.keyCode == 78) {
-    					e.preventDefault();
-    				}
-    				else if (option.ctrlO && e.ctrlKey && e.keyCode == 79) {
-    					e.preventDefault();
-    				}
-    				else if (option.ctrlR && e.ctrlKey && e.keyCode == 82) {
-    					e.preventDefault();
-    				}
-    				else if (option.ctrlS && e.ctrlKey && e.keyCode == 83) {
-    				    e.preventDefault();
-    				}
-    				else if (option.f1 && e.keyCode == 112) {
-    				    e.preventDefault();
-    				}
-    				else if (option.f2 && e.keyCode == 113) {
-    					e.preventDefault();
-    				}
-    				else if (option.f3 && e.keyCode == 114) {
-    					e.preventDefault();
-    				}
-    				else if (option.f4 && e.keyCode == 114) {
-    				    e.preventDefault();
-    				}
-    			}
-    		};
-    		$(document).off("keydown.globalKeyDown");
-    		$(document).on("keydown.globalKeyDown", onKeyDown);
-        };
-
-        root.surpressBrowserShortcut = surpressBrowserShortcut;
-    }(root, $));
-
-    // section Qz.Web.lastKeyPress
-    root.lastKeyPress = Qz.Object.property();
-
-    // section Qz.Web.globalKeyUp
-    (function (root, $) {
-        var events = [];
-    	var eventsEnum = Qz.Linq.enums(events);
-    	root.globalKeyUp = function (handler) {
-    		var functionExists = eventsEnum.any(function(k){ return Qz.Func.compare(handler, k.handler); });
-    		if(!functionExists){
-    			var key = Qz.Math.randomInt(0, 10000);
-    			while(eventsEnum.any(function(k){ return k.key == key; })){
-    				key = Qz.Math.randomInt(0, 10000);
-    			}
-    			events.push({key: key,
-    				handler: handler});
-    		}
-    		else{
-    			console.log("function " + handler + " already registered");
-    		}
-        };
-
-    	var onKeyUp = function(e){
-    		root.lastKeyPress({
-    			keyCode : e.keyCode,
-    			shiftKey: e.shiftKey,
-    			ctrlKey: e.ctrlKey
-    		});
-    		for(var i=0; i < events.length; i++){
-    			events[i].handler.apply(this, [e]);
-    		}
-    	};
-    	$(document).on("keyup", onKeyUp);
-    }(root, $));
 
     // source: http://stackoverflow.com/questions/2897155/get-cursor-position-in-characters-within-a-text-input-field
     // section Qz.Web.getCaretPosition
@@ -491,8 +397,23 @@ Q.Z = Q.Z || {};
         return $computedTarget;
     };
 
+    // section Qz.Web.lastKeyPress
+    root.lastKeyPress = Qz.Object.property();
+
     // section Qz.Web.scopeTab
     (function (root, $) {
+        var onKeyUp = function(e){
+            root.lastKeyPress({
+                keyCode : e.keyCode,
+                shiftKey: e.shiftKey,
+                ctrlKey: e.ctrlKey
+            });
+            for(var i=0; i < events.length; i++){
+                events[i].handler.apply(this, [e]);
+            }
+        };
+        $(document).on("keyup", onKeyUp);
+
     	var focus = function($elem){
     		if($elem.is('.select2-hidden-accessible')){
     			var $focus = $elem.next('.select2-container').find('.select2-selection');
