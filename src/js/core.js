@@ -4,6 +4,10 @@ Qz.Context = Qz.Context || {};
 Qz.Collection = Qz.Collection || {};
 Qz.Func = Qz.Func || {};
 Qz.Linq = Qz.Linq || {};
+Qz.Url = Qz.Url|| {};
+
+var Q = Q || {};
+Q.Z = Q.Z || {};
 
 // section Qz.Object
 (function (root, $) {
@@ -285,3 +289,42 @@ Qz.Linq = Qz.Linq || {};
 		return result;
 	};
 }(Qz.Linq, jQuery));
+
+// section Qz.Url
+(function (root, $) {
+    "use strict";
+    // section Qz.Url.rootUrl
+    root.rootUrl = Qz.Object.property();
+    // section Qz.Url.domainUrl
+    root.domainUrl = Qz.Object.property();
+}(Qz.Url, jQuery));
+
+// section Q.Z
+(function (root, $) {
+    "use strict";
+    // section Q.Z.enums
+	root.enums = function(){
+		return Qz.Linq.enums;
+	};
+
+    // section Q.Z.property
+    root.property = function(){
+		return Qz.Object.property;
+	};
+
+    // section Q.Z.html
+	root.html = function(){
+		return {
+			encode: Qz.Format.escapeHtml,
+			decode: Qz.Format.decodeHtml
+		};
+	};
+
+    // section Q.Z.queryString
+    root.queryString = function(){
+		return {
+			encode: Qz.Format.escapeQueryString,
+			decode: Qz.Format.decodeQueryString
+		};
+	};
+}(Q.Z, jQuery));
