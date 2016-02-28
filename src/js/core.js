@@ -290,8 +290,6 @@ Q.Z = Q.Z || {};
     };
 }(Qz.Math, jQuery));
 
-
-
 // section Qz.String
 (function (root, $) {
     "use strict";
@@ -408,9 +406,6 @@ Q.Z = Q.Z || {};
                 shiftKey: e.shiftKey,
                 ctrlKey: e.ctrlKey
             });
-            for(var i=0; i < events.length; i++){
-                events[i].handler.apply(this, [e]);
-            }
         };
         $(document).on("keyup", onKeyUp);
 
@@ -470,6 +465,58 @@ Q.Z = Q.Z || {};
     			}
     		});
     	};
+    }(root, $));
+
+    (function (root, $) {
+        var prompt = null;
+        var commands = [];
+        root.commands = {
+            get: function(){ return commands; },
+            add: function(command){
+                for(var key in command){
+                    commands.push({
+                        command : key,
+                        handler : command[key]
+                    });
+                }
+            }
+        };
+
+        var createPrompt = function(){
+            var prompt = $('<div class="qz-command"><input type="datalist" /></div>');
+            $(document.body).append(prompt);
+            prompt.find("input[type='datalist']").focus();
+            prompt.find("input[type='datalist']").on('keyup', function(e){
+                var enter = 13;
+                if(e.keyCode == enter){
+                    var value = $(this).val();
+                    for (var i = 0; i < commands.length; i++) {
+                        var command = commands[i];
+                        if(command.command == value){
+                            command.handler();
+                        }
+                    }
+                    prompt.hide();
+                }
+            });
+            $(document).on('keyup', function(e){
+                var escape = 27;
+                if(e.keyCode == escape){
+                    prompt.hide();
+                }
+            });
+            return prompt.get(0);
+        };
+        root.openCommand = function(){
+            if(!prompt){
+                prompt = createPrompt();
+            }
+            else{
+                $(prompt).find("input[type='datalist']").val('');
+                $(prompt).show();
+                $(prompt).find("input[type='datalist']").focus();
+            }
+        };
     }(root, $));
 }(Qz.Web, jQuery));
 

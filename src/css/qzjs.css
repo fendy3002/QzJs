@@ -134,3 +134,16 @@ input.numeric-input.has-error{
 	background-color:#f2dede;
 }
 /* ===== end: numeric.js */
+
+/* ===== command */
+div.qz-command{
+    position:fixed;
+    top:12px;
+    left: calc(50% - 150px);
+    min-width:300px;
+    z-index: 1100;
+}
+div.qz-command input[type='datalist']{
+    width:100%;
+}
+/* ===== end: command */

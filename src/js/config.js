@@ -4,7 +4,9 @@
         e.preventDefault();
 
         //show command text
+        Qz.Web.openCommand();
     });
 
-    
+    /* qz commands */
+    Qz.Web.commands.add({ "test" : function(){ alert("test"); } });
 }());
