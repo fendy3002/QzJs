@@ -4,6 +4,8 @@ Qz.Context = Qz.Context || {};
 Qz.Collection = Qz.Collection || {};
 Qz.Func = Qz.Func || {};
 Qz.Linq = Qz.Linq || {};
+Qz.Math = Qz.Math || {};
+Qz.String = Qz.String || {};
 Qz.Url = Qz.Url|| {};
 
 var Q = Q || {};
@@ -289,6 +291,62 @@ Q.Z = Q.Z || {};
 		return result;
 	};
 }(Qz.Linq, jQuery));
+
+// section Qz.Math
+(function (root, $) {
+    "use strict";
+    // section Qz.Math.randomInt
+    // courtesy of: http://stackoverflow.com/questions/4959975/generate-random-value-between-two-numbers-in-javascript
+    root.randomInt = function (min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    };
+}(Qz.Math, jQuery));
+
+
+
+// section Qz.String
+(function (root, $) {
+    "use strict";
+    // section Qz.String.endsWith
+    root.endsWith = function (str, suffix) {
+        return str.indexOf(suffix, str.length - suffix.length) !== -1;
+    };
+
+    // section Qz.String.startsWith
+    root.startsWith = function (str, suffix) {
+        return str.indexOf(suffix) == 0;
+    };
+
+    // section Qz.String.isJSON
+    root.isJSON = function (str) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
+    };
+
+    // section Qz.String.isNullOrWhitespace
+    root.isNullOrWhitespace = function (input) {
+        if (input == null) return true;
+        return input.replace(/\s/g, '').length < 1;
+    };
+
+    // section Qz.String.isNumeric
+    root.isNumeric = function (str, decimalSeparator) {
+		decimalSeparator = decimalSeparator || Qz.Context.formatInfo.decimalSeparator();
+		if(decimalSeparator == "."){
+        	return !isNaN(parseFloat(str)) && isFinite(str);
+		}
+		else{
+			var num = src.replace(/\./g, '').replace(',', '.');
+			return !isNaN(parseFloat(num)) && isFinite(num);
+		}
+    };
+}(Qz.String, jQuery));
+
+
 
 // section Qz.Url
 (function (root, $) {
