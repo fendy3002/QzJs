@@ -3,6 +3,7 @@ Qz.Object = Qz.Object || {};
 Qz.Context = Qz.Context || {};
 Qz.Collection = Qz.Collection || {};
 Qz.Func = Qz.Func || {};
+Qz.Linq = Qz.Linq || {};
 
 // section Qz.Object
 (function (root, $) {
@@ -195,3 +196,92 @@ Qz.Func = Qz.Func || {};
         }
     };
 }(Qz.Func, jQuery));
+
+// section Qz.Linq
+(function (root, $) {
+    "use strict";
+    // section Qz.Linq.firstOrNull
+    root.firstOrNull = function (stack, validation) {
+        var result = null;
+        for (var i = 0; i < stack.length; i++) {
+            if (validation(stack[i])) {
+                result = stack[i];
+                break;
+            }
+        }
+        return result;
+    };
+
+    // section Qz.Linq.any
+    root.any = function (stack, validation) {
+        var isAny = false;
+        for (var i = 0; i < stack.length; i++) {
+            if (validation(stack[i])) {
+                isAny = true;
+                break;
+            }
+        }
+        return isAny;
+    };
+
+    // section Qz.Linq.where
+    root.where = function (stack, validation) {
+        var resultArray = Array();
+        for (var i = 0; i < stack.length; i++) {
+            if (validation(stack[i])) {
+                resultArray.push(stack[i]);
+            }
+        }
+        return resultArray;
+    };
+
+    // section Qz.Linq.select
+    root.select = function (stack, selection) {
+        var resultArray = Array();
+        for (var i = 0; i < stack.length; i++) {
+            resultArray.push(selection(stack[i]));
+        }
+        return resultArray;
+    };
+
+    // section Qz.Linq.sum
+    root.sum = function (stack, field) {
+        var result = 0;
+		if(field == null){
+			field = function(data){
+				return data;
+			};
+		}
+        for (var i = 0; i < stack.length; i++) {
+            result += field(stack[i]);
+        }
+        return result;
+    };
+
+    // section Qz.Linq.enums
+    root.enums = function(arr){
+		var result = {
+			data: arr
+		};
+		result.sum = function(handler){
+			result.data = root.sum(result.data, handler);
+			return result;
+		};
+		result.where = function(handler){
+			result.data = root.where(result.data, handler);
+			return result;
+		};
+		result.select = function(handler){
+			result.data = root.select(result.data, handler);
+			return result;
+		};
+		result.any = function(handler){
+			return root.any(result.data, handler);
+		};
+		result.firstOrNull = function(handler){
+			return root.firstOrNull(result.data, handler);
+		};
+
+		return result;
+	};
+}(Qz.Linq, jQuery));
