@@ -9,8 +9,11 @@
 
     /* qz commands */
     Qz.Web.commands.add({
+        // toggle full page
         "full" : function(){ Qz.AdminLTE.toggleFull(); },
+        // navigation to url
         "/home" : function(){ window.location = './index.html'; },
-        "test" : function(){ alert("test"); },
+        // using parameter
+        "url:" : function(e){ window.location = e; },
     });
 }());

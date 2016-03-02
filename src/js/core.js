@@ -476,6 +476,7 @@ Q.Z = Q.Z || {};
         }());
 
         var commands = [];
+        // section Qz.Web.commands
         root.commands = {
             get: function(){ return commands; },
             add: function(command){
@@ -490,6 +491,23 @@ Q.Z = Q.Z || {};
             }
         };
 
+        var runCommand = function(query){
+            var search = (query.split(':')[0] || "").trim();
+            var value = (query.split(':')[1] || "").trim();
+            var selectedCommands = Qz.Linq.where(commands, function(k){
+                if(k.command.endsWith(':')){
+                    return k.command.split(':')[0] == search;
+                }
+                else{
+                    return k.command == search;
+                }
+            });
+
+            for (var i = 0; i < selectedCommands.length; i++) {
+                selectedCommands[i].handler(value);
+            }
+        }
+
         var createPrompt = function(){
             var prompt = $('<div class="qz-command"><input list="QzCommands" /></div>');
             $(document.body).append(prompt);
@@ -500,13 +518,7 @@ Q.Z = Q.Z || {};
                 var enter = 13;
                 if(e.keyCode == enter){
                     var value = $(this).val();
-                    var selectedCommands = Qz.Linq.where(commands, function(k){
-                        return k.command == value;
-                    });
-
-                    for (var i = 0; i < selectedCommands.length; i++) {
-                        selectedCommands[i].handler();
-                    }
+                    runCommand(value);
                     prompt.hide();
                 }
             });
@@ -520,6 +532,7 @@ Q.Z = Q.Z || {};
             });
             return prompt.get(0);
         };
+        // section Qz.Web.openCommand
         root.openCommand = function(){
             if(!prompt){
                 prompt = createPrompt();
