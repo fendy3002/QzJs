@@ -1,7 +1,7 @@
 var Qz = Qz || {};
 Qz.AdminLTE = Qz.AdminLTE || {};
 
-// section Qz.AdminLTE.toggleFull
+// section Qz.AdminLTE
 (function (root, $) {
 	var menuCollapsed = localStorage.adminLTE_menuCollapsed === 'true' || false;
 	var setFinalStatus = function(menuCollapsed){
@@ -17,6 +17,7 @@ Qz.AdminLTE = Qz.AdminLTE || {};
 		}
 	};
 
+	// section Qz.AdminLTE.toggleFull
 	root.toggleFull = function(){
         menuCollapsed = !menuCollapsed;
         localStorage.setItem("adminLTE_menuCollapsed", menuCollapsed);
@@ -26,4 +27,9 @@ Qz.AdminLTE = Qz.AdminLTE || {};
     $(function(){
         setFinalStatus(menuCollapsed);
     })
+
+	// section Qz.AdminLTE.toggleMini
+	root.toggleMini = function(){
+        $("nav a[data-toggle='offcanvas']").trigger('click');
+	};
 }(Qz.AdminLTE, jQuery));
