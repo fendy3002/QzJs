@@ -8,5 +8,9 @@
     });
 
     /* qz commands */
-    Qz.Web.commands.add({ "test" : function(){ alert("test"); } });
+    Qz.Web.commands.add({
+        "full" : function(){ Qz.AdminLTE.toggleFull(); },
+        "/home" : function(){ window.location = './index.html'; },
+        "test" : function(){ alert("test"); },
+    });
 }());

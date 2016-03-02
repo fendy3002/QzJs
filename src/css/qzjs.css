@@ -80,7 +80,7 @@ a.sort-handle.sort-handle-sm {
     .hideden-sm-md-lg{
         display:none;
     }
-	#page-wrapper.nomargin-sm-md-lg{
+	.nomargin-sm-md-lg{
 		margin-left:0px;
 	}
 }
