@@ -139,11 +139,19 @@ input.numeric-input.has-error{
 div.qz-command{
     position:fixed;
     top:12px;
-    left: calc(50% - 150px);
-    min-width:300px;
+    left: calc(50% - 170px);
+    min-width:340px;
+    padding: 4px 12px;
+    background-color:white;
     z-index: 1100;
+    border-radius: 6px;
 }
-div.qz-command input[type='datalist']{
+div.qz-command input[list='QzCommands']{
     width:100%;
+    border: none;
+    border-color: #D9D9D9;
+}
+div.qz-command input[list='QzCommands']:focus{
+    outline: none;
 }
 /* ===== end: command */
