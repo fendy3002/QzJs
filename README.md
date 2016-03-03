@@ -1,2 +1,7 @@
 # QzWeb
-Javascript class library using jquery with aim to provide administration-like screen functionality
+Javascript class library with aim to enhance administration screen functionality
+
+Dependencies:
+* jquery
+* knockount js
+* select2

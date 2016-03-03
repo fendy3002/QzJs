@@ -205,6 +205,17 @@ Q.Z = Q.Z || {};
         }
         return result;
     };
+    // section Qz.Linq.firstOrDefault
+    root.firstOrDefault = function (stack, validation, defaultValue) {
+        var result = defaultValue;
+        for (var i = 0; i < stack.length; i++) {
+            if (validation(stack[i])) {
+                result = stack[i];
+                break;
+            }
+        }
+        return result;
+    };
 
     // section Qz.Linq.any
     root.any = function (stack, validation) {
@@ -252,31 +263,102 @@ Q.Z = Q.Z || {};
         return result;
     };
 
+    // section Qz.Linq.max
+    root.max = function (stack, field) {
+        if(stack == null || stack.length == 0){
+            return null;
+        }
+
+        if(field == null){
+            field = function(data){
+                return data;
+            };
+        }
+        var result = null;
+        for (var i = 0; i < stack.length; i++) {
+            if(result == null){
+                result = stack[i];
+            }
+            result = (result < stack[i]) ? stack[i] : result;
+        }
+        return result;
+    };
+
+    // section Qz.Linq.min
+    root.min = function (stack, field) {
+        if(stack == null || stack.length == 0){
+            return null;
+        }
+
+        if(field == null){
+            field = function(data){
+                return data;
+            };
+        }
+        var result = null;
+        for (var i = 0; i < stack.length; i++) {
+            if(result == null){
+                result = stack[i];
+            }
+            result = (result > stack[i]) ? stack[i] : result;
+        }
+        return result;
+    };
+
     // section Qz.Linq.enums
     root.enums = function(arr){
-		var result = {
-			data: arr
+		var vm = {
+			data: arr,
+            commands: new Array(),
+            result: function(){
+                var data = vm.data;
+                for(var i = 0; i < vm.commands.length; i++){
+                    var command = vm.commands[i];
+                    data = command(data);
+                }
+                return data;
+            }
 		};
-		result.sum = function(handler){
-			result.data = root.sum(result.data, handler);
-			return result;
+		vm.sum = function(handler){
+			vm.commands.push(function(data){
+                return root.sum(data, handler);
+            });
+			return vm;
 		};
-		result.where = function(handler){
-			result.data = root.where(result.data, handler);
-			return result;
+		vm.max = function(field){
+			vm.commands.push(function(data){
+                return root.max(data, field);
+            });
+			return vm;
 		};
-		result.select = function(handler){
-			result.data = root.select(result.data, handler);
-			return result;
+		vm.min = function(field){
+			vm.commands.push(function(data){
+                return root.min(data, field);
+            });
+			return vm;
 		};
-		result.any = function(handler){
-			return root.any(result.data, handler);
+		vm.where = function(handler){
+			vm.commands.push(function(data){
+                return root.where(data, handler);
+            });
+			return vm;
 		};
-		result.firstOrNull = function(handler){
-			return root.firstOrNull(result.data, handler);
+		vm.select = function(handler){
+			vm.commands.push(function(data){
+                return root.select(data, handler);
+            });
+			return vm;
+		};
+		vm.any = function(handler){
+			var data = vm.result();
+			return root.any(data, handler);
+		};
+		vm.firstOrNull = function(handler){
+            var data = result.result();
+			return root.firstOrNull(data, handler);
 		};
 
-		return result;
+		return vm;
 	};
 }(Qz.Linq, jQuery));
 
