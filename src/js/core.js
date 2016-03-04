@@ -249,6 +249,29 @@ Q.Z = Q.Z || {};
         return resultArray;
     };
 
+    // section Qz.Linq.orderBy
+    root.orderBy = function (stack, comparer) {
+        if(stack == null || stack.length == 0){
+            return null;
+        }
+
+        var result = stack.slice();
+        var lastInsert = null;
+        for (var i = 0; i < stack.length; i++) {
+            var selectedIndex = i;
+            for(var j = i; j < stack.length; j++) {
+                if(comparer(result[j], result[selectedIndex])){
+                    selectedIndex = j;
+                }
+            }
+            console.log(selectedIndex);
+            var temp = result[i];
+            result[i] = result[selectedIndex];
+            result[selectedIndex] = temp;
+        }
+        return result;
+    };
+
     // section Qz.Linq.sum
     root.sum = function (stack, field) {
         var result = 0;
@@ -346,6 +369,12 @@ Q.Z = Q.Z || {};
 		vm.select = function(handler){
 			vm.commands.push(function(data){
                 return root.select(data, handler);
+            });
+			return vm;
+		};
+		vm.orderBy = function(handler){
+			vm.commands.push(function(data){
+                return root.orderBy(data, handler);
             });
 			return vm;
 		};
