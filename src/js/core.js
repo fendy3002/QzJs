@@ -264,11 +264,36 @@ Q.Z = Q.Z || {};
                     selectedIndex = j;
                 }
             }
-            console.log(selectedIndex);
             var temp = result[i];
             result[i] = result[selectedIndex];
             result[selectedIndex] = temp;
         }
+        return result;
+    };
+
+    // section Qz.Linq.groupBy
+    root.groupBy = function (stack, field, comparer) {
+        if(stack == null || stack.length == 0){
+            return null;
+        }
+
+        var result = new Array();
+        for (var i = 0; i < stack.length; i++) {
+            var grouped = field(stack[i]);
+            var isExists = false;
+            for(var j = 0; j < result.length; j++){
+                if(comparer(grouped, result[j].key)){
+                    result[j].value.push(stack[i]);
+                    isExists = true;
+                    break;
+                }
+            }
+            if(!isExists){
+                var added = { 'key' : grouped, 'value' : [ stack[i] ] };
+                result.push(added);
+            }
+        }
+
         return result;
     };
 
@@ -372,9 +397,15 @@ Q.Z = Q.Z || {};
             });
 			return vm;
 		};
-		vm.orderBy = function(handler){
+		vm.orderBy = function(comparer){
 			vm.commands.push(function(data){
-                return root.orderBy(data, handler);
+                return root.orderBy(data, comparer);
+            });
+			return vm;
+		};
+		vm.groupBy = function(field, comparer){
+			vm.commands.push(function(data){
+                return root.groupBy(data, field, comparer);
             });
 			return vm;
 		};

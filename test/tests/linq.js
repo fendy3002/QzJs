@@ -59,6 +59,49 @@ QUnit.test( "Qz.Linq.orderBy", function( assert ) {
     ]);
 });
 
+QUnit.test( "Qz.Linq.groupBy", function( assert ) {
+    var data = [
+        {city: 'a', pop: 10},
+        {city: 'a', pop: 12},
+        {city: 'b', pop: 15},
+        {city: 'c', pop: 20},
+        {city: 'c', pop: 23},
+        {city: 'c', pop: 25},
+    ];
+    var actual = Qz.Linq.enums(data)
+        .groupBy(
+            function(k){ return { city: k.city }; },
+            function(k, l){ return k.city == l.city; }
+        )
+        .result();
+    assert.deepEqual(actual, [
+        {
+            key: {
+                city: 'a'
+            }, value:[
+                {city: 'a', pop: 10},
+                {city: 'a', pop: 12}
+            ]
+        },
+        {
+            key: {
+                city: 'b'
+            }, value:[
+                {city: 'b', pop: 15}
+            ]
+        },
+        {
+            key: {
+                city: 'c'
+            }, value:[
+                {city: 'c', pop: 20},
+                {city: 'c', pop: 23},
+                {city: 'c', pop: 25}
+            ]
+        }
+    ]);
+});
+
 QUnit.test( "Qz.Linq.any", function( assert ) {
     var data = [
         {name: 'a', age: 10},
