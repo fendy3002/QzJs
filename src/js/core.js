@@ -354,8 +354,12 @@ Q.Z = Q.Z || {};
 			return root.any(data, handler);
 		};
 		vm.firstOrNull = function(handler){
-            var data = result.result();
+            var data = vm.result();
 			return root.firstOrNull(data, handler);
+		};
+		vm.firstOrDefault = function(handler, defaultValue){
+            var data = vm.result();
+			return root.firstOrDefault(data, handler, defaultValue);
 		};
 
 		return vm;
