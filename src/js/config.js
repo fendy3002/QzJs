@@ -8,7 +8,7 @@
     });
 
     /* qz commands */
-    Qz.Web.commands.add({
+    Qz.Commands.add({
         // toggle full page
         "full" : function(){ Qz.AdminLTE.toggleFull(); },
         "mini" : function(){ Qz.AdminLTE.toggleMini(); },

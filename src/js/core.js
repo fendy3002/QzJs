@@ -2,6 +2,8 @@ var Qz = Qz || {};
 Qz.Object = Qz.Object || {};
 Qz.Context = Qz.Context || {};
 Qz.Collection = Qz.Collection || {};
+Qz.Hooks = Qz.Hooks || {};
+Qz.Commands = Qz.Commands || {};
 Qz.Func = Qz.Func || {};
 Qz.Linq = Qz.Linq || {};
 Qz.Math = Qz.Math || {};
@@ -150,6 +152,72 @@ Q.Z = Q.Z || {};
     };
 }(Qz.Collection, jQuery));
 
+// section Qz.Hooks
+(function (root, $) {
+    "use strict";
+    var hooks = [];
+    // section Qz.Hooks.get
+    root.get = function(){ return hooks; };
+    // section Qz.Hooks.add
+    root.add = function(param){
+        for(var key in param){
+            hooks.push({
+                key : key,
+                handler : param[key]
+            });
+        }
+        root.run('qz-hooks-add', param);
+    };
+    // section Qz.Hooks.run
+    root.run = function(query, param){
+        var selectedHooks = Qz.Linq.where(hooks, function(k){
+            return k.key == query;
+        });
+        for (var i = 0; i < selectedHooks.length; i++) {
+            selectedHooks[i].handler(param);
+        }
+    };
+
+}(Qz.Hooks, jQuery));
+
+// section Qz.Commands
+(function (root, $) {
+    "use strict";
+    var commands = [];
+    // section Qz.Commands.get
+    root.get = function(){
+        return commands;
+    };
+
+    // section Qz.Commands.add
+    root.add = function(command){
+        for(var key in command){
+            commands.push({
+                command : key,
+                handler : command[key]
+            });
+        }
+        Qz.Hooks.run('qz-commands-add', command);
+    };
+
+    // section Qz.Commands.run
+    root.run = function(query){
+        var search = (query.split(':')[0] || "").trim();
+        var value = (query.split(':')[1] || "").trim();
+        var selectedCommands = Qz.Linq.where(commands, function(k){
+            if(k.command.endsWith(':')){
+                return k.command.split(':')[0] == search;
+            }
+            else{
+                return k.command == search;
+            }
+        });
+
+        for (var i = 0; i < selectedCommands.length; i++) {
+            selectedCommands[i].handler(value);
+        }
+    };
+}(Qz.Commands, jQuery));
 
 // section Qz.Func
 (function (root, $) {
@@ -620,39 +688,13 @@ Q.Z = Q.Z || {};
             $(document.body).append(datalist);
             return datalist.get(0);
         }());
-
-        var commands = [];
-        // section Qz.Web.commands
-        root.commands = {
-            get: function(){ return commands; },
-            add: function(command){
-                for(var key in command){
+        Qz.Hooks.add({
+            'qz-commands-add': function(commands){
+                for(var key in commands){
                     $(datalist).append("<option value='" + key + "'></option>");
-
-                    commands.push({
-                        command : key,
-                        handler : command[key]
-                    });
                 }
             }
-        };
-
-        var runCommand = function(query){
-            var search = (query.split(':')[0] || "").trim();
-            var value = (query.split(':')[1] || "").trim();
-            var selectedCommands = Qz.Linq.where(commands, function(k){
-                if(k.command.endsWith(':')){
-                    return k.command.split(':')[0] == search;
-                }
-                else{
-                    return k.command == search;
-                }
-            });
-
-            for (var i = 0; i < selectedCommands.length; i++) {
-                selectedCommands[i].handler(value);
-            }
-        }
+        });
 
         var createPrompt = function(){
             var prompt = $('<div class="qz-command"><input list="QzCommands" /></div>');
@@ -664,7 +706,7 @@ Q.Z = Q.Z || {};
                 var enter = 13;
                 if(e.keyCode == enter){
                     var value = $(this).val();
-                    runCommand(value);
+                    Qz.Commands.run(value);
                     prompt.hide();
                 }
             });
@@ -688,6 +730,25 @@ Q.Z = Q.Z || {};
                 $(prompt).show();
                 $(prompt).find("input[list='QzCommands']").focus();
             }
+        };
+    }(root, $));
+
+
+    (function (root, $) {
+        $(document.body).on('click', function(){
+
+        });
+
+        var current = null;
+        root.confirmButton = function($element, param){
+            var cur = $.extend({
+                'submit' : function(){  },
+                'content' : 'Confirm?'
+            }, param);
+
+            $element.on('click', function(){
+
+            });
         };
     }(root, $));
 }(Qz.Web, jQuery));
