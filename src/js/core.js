@@ -735,19 +735,44 @@ Q.Z = Q.Z || {};
 
 
     (function (root, $) {
-        $(document.body).on('click', function(){
+        var current = null;
+        var currentContent = null;
+        var resetConfirm = function(current){
+            $current = $(current);
+            $current.html(currentContent);
 
+            current = null;
+            currentContent = null;
+        };
+        Qz.Hooks.add({
+            'qz-load' : function(){
+                $(document.body).on('click', function(){
+                    resetConfirm(current);
+                });
+            }
         });
 
-        var current = null;
         root.confirmButton = function($element, param){
             var cur = $.extend({
                 'submit' : function(){  },
                 'content' : 'Confirm?'
             }, param);
 
-            $element.on('click', function(){
-
+            for(var i = 0; i < $element.length; i++){
+                $element.get(i).data('qz-confirm-button', cur);
+            }
+            $element.on('click', function(e){
+                $this = $(this);
+                var param = $this.data('qz-confirm-button');
+                if(current === this){
+                    param.submit.apply(this, [e]);
+                }
+                else{
+                    resetConfirm(current);
+                    current = this;
+                    currentContent = $this.html();
+                    $this.html(param.content);
+                }
             });
         };
     }(root, $));
