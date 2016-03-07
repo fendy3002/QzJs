@@ -9,12 +9,21 @@ Qz.AdminLTE = Qz.AdminLTE || {};
             $("header.main-header").addClass("hideden-sm-md-lg");
 			$("aside.main-sidebar").addClass("hideden-sm-md-lg");
 			$("div.wrapper div.content-wrapper").addClass("nomargin-sm-md-lg");
+			$("div.wrapper footer.main-footer").addClass("nomargin-sm-md-lg");
 		}
 		else{
             $("header.main-header").removeClass("hideden-sm-md-lg");
 			$("aside.main-sidebar").removeClass("hideden-sm-md-lg");
+
 			$("div.wrapper div.content-wrapper").removeClass("nomargin-sm-md-lg");
+			$("div.wrapper footer.main-footer").removeClass("nomargin-sm-md-lg");
 		}
+	};
+
+	// section Qz.AdminLTE.refresh
+	root.refresh = function(){
+		menuCollapsed = localStorage.adminLTE_menuCollapsed === 'true' || false;
+		setFinalStatus(menuCollapsed);
 	};
 
 	// section Qz.AdminLTE.toggleFull

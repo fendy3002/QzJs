@@ -7,6 +7,13 @@
         Qz.Web.openCommand();
     });
 
+    /* qz hooks */
+    Qz.Hooks.add({
+        'qz-load': function(){
+            Qz.AdminLTE.refresh();
+        }
+    });
+
     /* qz commands */
     Qz.Commands.add({
         // toggle full page

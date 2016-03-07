@@ -178,6 +178,9 @@ Q.Z = Q.Z || {};
         }
     };
 
+    $(function(){
+        Qz.Hooks.run('qz-load');
+    });
 }(Qz.Hooks, jQuery));
 
 // section Qz.Commands
