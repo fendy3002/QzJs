@@ -736,49 +736,54 @@ Q.Z = Q.Z || {};
         };
     }(root, $));
 
-
+    root.Confirm = root.Confirm || {};
     (function (root, $) {
         var current = null;
-        var currentContent = null;
-        var resetConfirm = function(current){
-            $current = $(current);
-            $current.html(currentContent);
 
-            current = null;
-            currentContent = null;
+        // section Qz.Web.Confirm.reset
+        root.reset = function(ele){
+            var $current = $(ele);
+            var originalContent = $current.data('qz-confirm-button-original-content');
+            $current.html(originalContent);
         };
-        Qz.Hooks.add({
-            'qz-load' : function(){
-                $(document.body).on('click', function(){
-                    resetConfirm(current);
-                });
-            }
-        });
 
-        root.confirmButton = function($element, param){
+        // section Qz.Web.Confirm.init
+        root.init = function($element, param){
             var cur = $.extend({
                 'submit' : function(){  },
                 'content' : 'Confirm?'
             }, param);
 
             for(var i = 0; i < $element.length; i++){
-                $element.get(i).data('qz-confirm-button', cur);
+                $element.eq(i).data('qz-confirm-button', cur);
             }
             $element.on('click', function(e){
-                $this = $(this);
+                var $this = $(this);
                 var param = $this.data('qz-confirm-button');
+
                 if(current === this){
                     param.submit.apply(this, [e]);
+                    current = null;
                 }
                 else{
-                    resetConfirm(current);
+                    root.reset(current);
                     current = this;
-                    currentContent = $this.html();
+                    $this.data('qz-confirm-button-original-content', $this.html());
                     $this.html(param.content);
                 }
+                return false;
             });
         };
-    }(root, $));
+
+        Qz.Hooks.add({
+            'qz-load' : function(){
+                $(document.body).on('click', function(){
+                    root.reset(current);
+                    current = null;
+                });
+            }
+        });
+    }(root.Confirm, $));
 }(Qz.Web, jQuery));
 
 
