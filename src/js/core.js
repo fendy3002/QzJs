@@ -784,6 +784,12 @@ Q.Z = Q.Z || {};
             }
         });
     }(root.Confirm, $));
+
+    root.focus = function(key){
+        var trimmed = key.trim();
+        $("[data-qz-focus='" + trimmed + "']").focus();
+    };
+
 }(Qz.Web, jQuery));
 
 

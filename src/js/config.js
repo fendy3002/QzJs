@@ -19,6 +19,10 @@
         // toggle full page
         "full" : function(){ Qz.AdminLTE.toggleFull(); },
         "mini" : function(){ Qz.AdminLTE.toggleMini(); },
+
+        // focus
+        "focus:" : function(e){ Qz.Web.focus(e); },
+
         // navigation to url
         "/home" : function(){ window.location = './index.html'; },
         // using parameter

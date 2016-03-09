@@ -3,9 +3,16 @@ Qz.AdminLTE = Qz.AdminLTE || {};
 
 // section Qz.AdminLTE
 (function (root, $) {
+	var isMini = function(){
+		return $(document.body).hasClass('sidebar-collapse');
+	};
 	var menuCollapsed = localStorage.adminLTE_menuCollapsed === 'true' || false;
 	var setFinalStatus = function(menuCollapsed){
 		if(menuCollapsed){
+			if(isMini()){
+				$(document.body).removeClass('sidebar-collapse');
+			}
+
             $("header.main-header").addClass("hideden-sm-md-lg");
 			$("aside.main-sidebar").addClass("hideden-sm-md-lg");
 			$("div.wrapper div.content-wrapper").addClass("nomargin-sm-md-lg");
@@ -14,7 +21,6 @@ Qz.AdminLTE = Qz.AdminLTE || {};
 		else{
             $("header.main-header").removeClass("hideden-sm-md-lg");
 			$("aside.main-sidebar").removeClass("hideden-sm-md-lg");
-
 			$("div.wrapper div.content-wrapper").removeClass("nomargin-sm-md-lg");
 			$("div.wrapper footer.main-footer").removeClass("nomargin-sm-md-lg");
 		}
