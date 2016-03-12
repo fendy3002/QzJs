@@ -92,38 +92,18 @@
                     <p>Example:</p>
                     <div>
                         <button class="btn btn-flat btn-success"
-                            data-qz-focus="btn1"
                             data-role="confirm-button" type="button" data-text="Button submit clicked">
                             Submit</button>
                         <button class="btn btn-flat btn-primary"
-                            data-qz-focus="btn2"
                             data-role="confirm-button" type="button"  data-text="Button submit primary clicked">
                             <i class="fa fa-check"></i>
                         </button>
                         <button class="btn btn-flat btn-danger"
-                            data-qz-focus="btn3"
                             data-role="confirm-button" type="button" data-text="Button remove clicked">
                             <i class="fa fa-remove"></i> Remove
                         </button>
                     </div>
 
-                    <p>Html:</p>
-                    <p>
-                        <pre><code>&lt;button class=&quot;btn btn-flat btn-success&quot;
-    data-qz-focus=&quot;btn1&quot;
-    data-role=&quot;confirm-button&quot; type=&quot;button&quot; data-text=&quot;Button submit clicked&quot;&gt;
-    Submit&lt;/button&gt;
-&lt;button class=&quot;btn btn-flat btn-primary&quot;
-    data-qz-focus=&quot;btn2&quot;
-    data-role=&quot;confirm-button&quot; type=&quot;button&quot;  data-text=&quot;Button submit primary clicked&quot;&gt;
-    &lt;i class=&quot;fa fa-check&quot;&gt;&lt;/i&gt;
-&lt;/button&gt;
-&lt;button class=&quot;btn btn-flat btn-danger&quot;
-    data-qz-focus=&quot;btn3&quot;
-    data-role=&quot;confirm-button&quot; type=&quot;button&quot; data-text=&quot;Button remove clicked&quot;&gt;
-    &lt;i class=&quot;fa fa-remove&quot;&gt;&lt;/i&gt; Remove
-&lt;/button&gt;</code></pre>
-                    </p>
                     <p>Javascript:</p>
                     <p>
                         <pre><code>Qz.Web.Confirm.init(
@@ -150,27 +130,77 @@
                 </div>
                 <div class="box-body">
                     <p>
-                        Commands can be showed up using Ctrl+Shift+P. A command textbox will show on center top page.
+                        Commands can be showed up using <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>. A command textbox will show on center top page.
                     </p>
+                    <p>Commands can be registered using <code>Qz.Commands.add</code> syntax. There are predefined commands on config.js.</p>
                     <p>
-                        <h4>Using commands to change screen</h4>
-                        <div>
-                            "full"
-                        </div>
-                        <div>
-                            "mini"
-                        </div>
-                    </p>
-
-                    <p>
-                        <h4>Using commands to focus</h4>
-                        <div>
-                            "focus:{key}"
-                        </div>
+                        <h4>Predefined commands</h4>
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Command</th>
+                                    <th>Effect</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>full</code></td>
+                                    <td>Compatible by default with AdminLTE. <code>full</code> command will hide the top and side menu.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>mini</code></td>
+                                    <td>Compatible by default with AdminLTE. <code>mini</code> command will shrink the side menu.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>focus:{key}</code></td>
+                                    <td>Focus to any element with <code>data-qz-focus</code> HTML attribute. See "Focus" section.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </p>
                 </div>
             </div>
             <!-- /commands -->
+
+            <!-- linq -->
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3><code>focus:{key}</code> command</h3>
+                </div>
+                <div class="box-body">
+                    <p>Focus to any element with <code>data-qz-focus</code> HTML attribute. The following are examples:</p>
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Key</th>
+                                <th>Focus element</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>text1</code></td>
+                                <td><input class="mousetrap form-control" data-qz-focus="text1" /></td>
+                            </tr>
+                            <tr>
+                                <td><code>btn1</code></td>
+                                <td><button class="btn btn-default" data-qz-focus="btn1"><i class="fa fa-home"></i> Home</button></td>
+                            </tr>
+                            <tr>
+                                <td><code>check1</code></td>
+                                <td><input class="mousetrap checkbox" type="checkbox" data-qz-focus="check1"/></td>
+                            </tr>
+                            <tr>
+                                <td><code>combo1</code></td>
+                                <td><select class="mousetrap form-control" data-qz-focus="combo1">
+                                    <option>Option 1</option>
+                                    <option>Option 2</option>
+                                </select></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- /linq -->
 
             <!-- linq -->
             <div class="box">

@@ -700,7 +700,7 @@ Q.Z = Q.Z || {};
         });
 
         var createPrompt = function(){
-            var prompt = $('<div class="qz-command"><input list="QzCommands" /></div>');
+            var prompt = $('<div class="qz-command"><input class="form-control" list="QzCommands" /></div>');
             $(document.body).append(prompt);
             prompt.find("input[list='QzCommands']").after(datalist);
 

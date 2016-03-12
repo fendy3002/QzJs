@@ -141,19 +141,8 @@ div.qz-command{
     top:12px;
     left: calc(50% - 170px);
     min-width:340px;
-    padding: 4px 12px;
+    padding: 0;
     background-color:white;
     z-index: 1100;
-    border-radius: 6px;
-}
-div.qz-command input[list='QzCommands']{
-    width:100%;
-    border-top: none;
-    border-right: none;
-    border-left: none;
-    border-bottom: none;
-}
-div.qz-command input[list='QzCommands']:focus{
-    outline: none;
 }
 /* ===== end: command */
