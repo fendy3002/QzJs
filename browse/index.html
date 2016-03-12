@@ -88,23 +88,89 @@
                     <h3>Confirmation Button</h3>
                 </div>
                 <div class="box-body">
-                    <button class="btn btn-flat btn-success"
-                        data-qz-focus="btn1"
-                        data-role="confirm-button" type="button" data-text="Button submit clicked">
-                        Submit</button>
-                    <button class="btn btn-flat btn-primary"
-                        data-qz-focus="btn2"
-                        data-role="confirm-button" type="button"  data-text="Button submit primary clicked">
-                        <i class="fa fa-check"></i>
-                    </button>
-                    <button class="btn btn-flat btn-danger"
-                        data-qz-focus="btn3"
-                        data-role="confirm-button" type="button" data-text="Button remove clicked">
-                        <i class="fa fa-remove"></i> Remove
-                    </button>
+                    <p>Confirmation button will make the button to be in "confirmation" state when clicked once, then do the action when clicked again.</p>
+                    <p>Example:</p>
+                    <div>
+                        <button class="btn btn-flat btn-success"
+                            data-qz-focus="btn1"
+                            data-role="confirm-button" type="button" data-text="Button submit clicked">
+                            Submit</button>
+                        <button class="btn btn-flat btn-primary"
+                            data-qz-focus="btn2"
+                            data-role="confirm-button" type="button"  data-text="Button submit primary clicked">
+                            <i class="fa fa-check"></i>
+                        </button>
+                        <button class="btn btn-flat btn-danger"
+                            data-qz-focus="btn3"
+                            data-role="confirm-button" type="button" data-text="Button remove clicked">
+                            <i class="fa fa-remove"></i> Remove
+                        </button>
+                    </div>
+
+                    <p>Html:</p>
+                    <p>
+                        <pre><code>&lt;button class=&quot;btn btn-flat btn-success&quot;
+    data-qz-focus=&quot;btn1&quot;
+    data-role=&quot;confirm-button&quot; type=&quot;button&quot; data-text=&quot;Button submit clicked&quot;&gt;
+    Submit&lt;/button&gt;
+&lt;button class=&quot;btn btn-flat btn-primary&quot;
+    data-qz-focus=&quot;btn2&quot;
+    data-role=&quot;confirm-button&quot; type=&quot;button&quot;  data-text=&quot;Button submit primary clicked&quot;&gt;
+    &lt;i class=&quot;fa fa-check&quot;&gt;&lt;/i&gt;
+&lt;/button&gt;
+&lt;button class=&quot;btn btn-flat btn-danger&quot;
+    data-qz-focus=&quot;btn3&quot;
+    data-role=&quot;confirm-button&quot; type=&quot;button&quot; data-text=&quot;Button remove clicked&quot;&gt;
+    &lt;i class=&quot;fa fa-remove&quot;&gt;&lt;/i&gt; Remove
+&lt;/button&gt;</code></pre>
+                    </p>
+                    <p>Javascript:</p>
+                    <p>
+                        <pre><code>Qz.Web.Confirm.init(
+    $("button[data-role='confirm-button']"),
+    {
+        'submit' : function()
+        {
+            var text = $(this).attr('data-text');
+            alert(text);
+
+            Qz.Web.Confirm.reset(this);
+        }
+    }
+);</code></pre>
+                    </p>
                 </div>
             </div>
             <!-- /confirmation button -->
+
+            <!-- commands -->
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3>Commands</h3>
+                </div>
+                <div class="box-body">
+                    <p>
+                        Commands can be showed up using Ctrl+Shift+P. A command textbox will show on center top page.
+                    </p>
+                    <p>
+                        <h4>Using commands to change screen</h4>
+                        <div>
+                            "full"
+                        </div>
+                        <div>
+                            "mini"
+                        </div>
+                    </p>
+
+                    <p>
+                        <h4>Using commands to focus</h4>
+                        <div>
+                            "focus:{key}"
+                        </div>
+                    </p>
+                </div>
+            </div>
+            <!-- /commands -->
 
             <!-- linq -->
             <div class="box">
@@ -116,32 +182,6 @@
                 </div>
             </div>
             <!-- /linq -->
-
-            <!-- commands -->
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3>Commands</h3>
-                </div>
-                <div class="box-body">
-                    <div>
-                        Commands can be executed using Ctrl+Shift+P
-                    </div>
-
-                    <h4>Using commands to change screen</h4>
-                    <div>
-                        "full"
-                    </div>
-                    <div>
-                        "mini"
-                    </div>
-
-                    <h4>Using commands to focus</h4>
-                    <div>
-                        "focus:{key}"
-                    </div>
-                </div>
-            </div>
-            <!-- /commands -->
         </section>
 
         <!-- Main content -->
@@ -214,9 +254,7 @@
                     Qz.Web.Confirm.reset(this);
                 }
             });
-        })
-
-
+        });
 
         $(function(){
             $('footer').text('Copyright ' + new Date().getFullYear() + ' @ QzJs');
